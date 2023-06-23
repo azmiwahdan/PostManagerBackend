@@ -16,7 +16,8 @@ class PostResource extends JsonResource
     {
         return [
             'postText' => $this->post_text,
-            'userId' => $this->user_id
+            'userId' => $this->user_id,
+            'commentStatus' => $this->comment_status
         ];
     }
 }

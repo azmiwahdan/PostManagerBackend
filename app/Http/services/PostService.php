@@ -7,6 +7,7 @@ use App\Http\Resources\PostResource;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +16,7 @@ use Illuminate\Support\Collection;
 
 class PostService
 {
-    protected $authService;
+    protected LoginService $authService;
 
     public function __construct(LoginService $loginService)
     {
@@ -31,6 +32,7 @@ class PostService
         $post = new Post;
         $post->post_text = $request->post_text;
         $post->user_id = $user->id;
+        $post->comment_status = $request->input('comment_status', 'opened');
         $post->save();
         return response()->json([
             'message' => 'Post created successfully',
@@ -44,17 +46,22 @@ class PostService
         if (!$post) {
             return response()->json(['message' => 'Post not found'], 404);
         }
+
         $comments = $post->comments()->whereNull('parent_comment_id')->get();
         return CommentResource::collection($comments);
     }
 
-    public function commentOnPost($postId, Request $request)
+    public
+    function commentOnPost($postId, Request $request)
     {
         $post = Post::find($postId);
         if (!$post) {
             return response()->json(['message' => 'post not found'], 404);
         }
         $user = $this->authService->retrieveAuthenticatedUser();
+        if ($post->comment_status = 'closed' && $user->id != $post->user_id) {
+            return response()->json(['message' => 'comments closed'], 403);
+        }
         $validatedData = $request->validate([
             'comment_text' => 'required'
         ]);
@@ -70,7 +77,8 @@ class PostService
 
     }
 
-    public function replyToComment($commentId, Request $request)
+    public
+    function replyToComment($commentId, Request $request)
     {
         $request->validate([
             'reply_text' => 'required',
@@ -91,7 +99,8 @@ class PostService
         ], 201);
     }
 
-    public function getCommentReplies($commentId)
+    public
+    function getCommentReplies($commentId)
     {
         $parentComment = Comment::findOrFail($commentId);
         $replies = $parentComment->replies;
@@ -99,6 +108,6 @@ class PostService
             'replies' => CommentResource::collection($replies),
         ]);
     }
-    //TODO : enum post privacy (public,only me)--do it
+//TODO : enum post privacy (public,only me)--do it
 
 }

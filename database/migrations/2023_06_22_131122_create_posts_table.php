@@ -13,6 +13,7 @@ return new class extends Migration {
         Schema::create('posts', function (Blueprint $table) {
             $table->id()->autoIncrement();
             $table->text('post_text');
+            $table->enum('comment_status', ['opened', 'closed'])->default('opened');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
