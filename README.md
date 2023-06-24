@@ -23,26 +23,6 @@
    Secure authentication and authorization for API endpoints.
    
    Error handling and validation of user input.
-   
-## Installation
-  To install and set up PostManagerBackend, follow these steps:
-  Clone the repository to your local machine.
-  
-  Install the required dependencies by running the following command:
-
-  composer install
-  
-  Configure the database connection by updating the .env file with your MySQL database credentials.
-  
-  Run the database migrations to create the required tables by executing the following command:
-  
-  php artisan migrate
-
- ### Start the development server by executing the following command:
- 
-    php artisan serve
-    
-### The API endpoints should now be accessible at http://localhost:8000.
 
 ## Usage
 To use the PostManagerBackend APIs, you can utilize tools like Postman or any REST client.
