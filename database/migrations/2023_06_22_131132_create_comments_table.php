@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('parent_comment_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('post_id')->references('id')->on('posts');
-            $table->foreign('parent_comment_id')->references('id')->on('comments');
+            $table->foreign('parent_comment_id')->references('id')->on('comments')->onDelete('cascade');;
         });
     }
 

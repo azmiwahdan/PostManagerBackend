@@ -2,43 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorePostRequest;
-use App\Http\Requests\UpdatePostRequest;
-use App\Http\services\PostService;
-use App\Models\Post;
+use App\Http\services\servicesImpl\PostService;
+use Illuminate\Http\Request;
+use function Symfony\Component\Translation\t;
 
-class PostController extends Controller
+class PostController
 {
-    protected $postService;
+    protected PostService $postService;
 
-    public function __construct(PostService $postService)
+    public function __construct(PostService $service)
     {
-        $this->postService = $postService;
+        $this->postService = $service;
     }
 
     public function createPost()
     {
-        return $this->postService->createPost(request());
+        return $this->postService->create(Request());
     }
 
-    public function getPostComments($postId)
+    public function updatePost($postId)
     {
-        return $this->postService->getPostComments($postId);
+        return $this->postService->update($postId, Request());
     }
 
-    public function commentOnPost($postId)
+    public function deletePost($postId)
     {
-        return $this->postService->commentOnPost($postId, request());
+        return $this->postService->delete($postId);
     }
-
-    public function replyToComment($commentId)
-    {
-        return $this->postService->replyToComment($commentId, request());
-    }
-
-    public function getCommentReplies($commentId)
-    {
-        return $this->postService->getCommentReplies($commentId);
-    }
-
 }

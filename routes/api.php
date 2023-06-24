@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\PostCommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -19,13 +21,24 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
+    Route::prefix('/users')->group(function () {
+        Route::get('/', [UserController::class, 'getAllUsers']);
+        Route::get('/{userId}', [UserController::class, 'getUserById']);
+        Route::put('/{userId}', [UserController::class, 'updateUser']);
+        Route::get('/{userId}', [UserController::class, 'deleteUser']);
+    });
     Route::prefix('/posts')->group(function () {
         Route::post('/', [PostController::class, 'createPost']);
-        Route::get('/{postId}/comments', [PostController::class, 'getPostComments']);
-        Route::Post('/{postId}/comments', [PostController::class, 'commentOnPost']);
-        Route::post('/comments/{commentId}/replies', [PostController::class, 'replyToComment']);
-        Route::get('/comments/{commentId}/replies', [PostController::class, 'getCommentReplies']);
-
+        Route::put('/{postId}', [PostController::class, 'updatePost']);
+        Route::delete('/{postId}', [PostController::class, 'deletePost']);
+        Route::get('/{postId}/comments', [PostCommentController::class, 'getPostComments']);
+        Route::Post('/{postId}/comments', [PostCommentController::class, 'commentOnPost']);
+        Route::post('/comments/{commentId}/replies', [PostCommentController::class, 'replyToComment']);
+        Route::get('/comments/{commentId}/replies', [PostCommentController::class, 'getCommentReplies']);
+    });
+    Route::prefix('/comments')->group(function () {
+        Route::patch('/{commentId}', [CommentController::class, 'updateComment']);
+        Route::delete('/{commentId}', [CommentController::class, 'deleteComment']);
     });
 });
 
