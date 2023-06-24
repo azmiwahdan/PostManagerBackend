@@ -11,11 +11,17 @@
 ## Features
 
    User registration and login with authentication using Laravel Sanctum.
+   
    User logout to invalidate the authentication token.
+   
    Post creation, updating, and deletion.
+   
    Comment creation, updating, and deletion.
+
    Reply creation, updating, and deletion for comments.
+   
    Secure authentication and authorization for API endpoints.
+   
    Error handling and validation of user input.
    
 ## Installation
