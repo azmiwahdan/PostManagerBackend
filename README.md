@@ -39,7 +39,9 @@
   php artisan migrate
 
  ### Start the development server by executing the following command:
+ 
     php artisan serve
+    
 ### The API endpoints should now be accessible at http://localhost:8000.
 
 ## Usage
